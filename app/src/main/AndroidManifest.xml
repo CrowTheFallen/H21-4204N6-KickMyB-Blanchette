@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KickMyB">
-        <activity android:name=".Consu"></activity>
+        <activity android:name=".CreationActivity"></activity>
+        <activity android:name=".ConsultationActivity"></activity>
+        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".InscriptionActivity"></activity>
         <activity android:name=".ConnectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

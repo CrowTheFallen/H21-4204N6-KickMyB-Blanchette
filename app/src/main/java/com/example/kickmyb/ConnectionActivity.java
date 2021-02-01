@@ -2,6 +2,7 @@ package com.example.kickmyb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,5 +16,21 @@ public class ConnectionActivity extends AppCompatActivity {
         binding = ActivityConnectionBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        binding.Connection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ConnectionActivity.this,HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.Inscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ConnectionActivity.this,InscriptionActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
