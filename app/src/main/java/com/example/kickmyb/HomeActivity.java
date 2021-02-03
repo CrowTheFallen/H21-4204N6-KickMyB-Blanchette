@@ -10,8 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kickmyb.databinding.ActivityCreationBinding;
 import com.example.kickmyb.databinding.ActivityHomeBinding;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
+    TâcheAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +27,20 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(view);
 
         this.initRecycler();
+        this.remplirRecycler();
+    }
+
+    private void remplirRecycler() {
+        for (int i = 0 ; i < 250 ; i++) {
+            Tâche p = new Tâche();
+            //Calendar maintenant = Calendar.getInstance();
+            p.nom = "Tâche numéro " + i;
+            p.pourcentage = new Random().nextInt(101);
+            p.dateDeCréation = "2021/02/03";
+            p.dateDeFin = "2021/02/08";
+            adapter.list.add(p);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void initRecycler(){
@@ -27,11 +48,11 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        adapter = new PersonAdapter();
+        adapter = new TâcheAdapter();
         recyclerView.setAdapter(adapter);
     }
 }
