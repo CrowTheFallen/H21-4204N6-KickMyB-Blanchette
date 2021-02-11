@@ -1,5 +1,6 @@
 package com.example.kickmyb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,5 +17,13 @@ public class CreationActivity extends AppCompatActivity {
         binding = ActivityCreationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        binding.button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CreationActivity.this,HomeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

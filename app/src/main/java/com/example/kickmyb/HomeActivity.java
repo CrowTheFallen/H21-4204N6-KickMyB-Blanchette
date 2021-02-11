@@ -1,5 +1,6 @@
 package com.example.kickmyb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -25,6 +26,14 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,CreationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         this.initRecycler();
         this.remplirRecycler();
