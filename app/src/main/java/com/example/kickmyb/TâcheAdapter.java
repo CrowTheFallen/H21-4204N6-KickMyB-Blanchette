@@ -1,7 +1,9 @@
 package com.example.kickmyb;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +31,18 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
             Pourcentage = v.findViewById(R.id.Pourcentage);
             TempsÉcoulé = v.findViewById(R.id.TempsÉcoulé);
             DateLimite = v.findViewById(R.id.DateLimite);
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(),ConsultationActivity.class);
+                    intent.putExtra("NomTâche", NomTâche.getText());
+                    intent.putExtra("Pourcentage", Pourcentage.getText());
+                    intent.putExtra("TempsÉcoulé", TempsÉcoulé.getText());
+                    intent.putExtra("DateLimite", DateLimite.getText());
+                    view.getContext().startActivity(intent);
+                }
+            });
         }
     }
 

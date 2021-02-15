@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
             Tâche p = new Tâche();
             //Calendar maintenant = Calendar.getInstance();
             p.nom = "Tâche numéro " + i;
-            p.pourcentage = new Random().nextInt(101);
+            p.pourcentage = new Random().nextInt(11) * 10;
             p.dateDeCréation = "2021/02/03";
             p.dateDeFin = "2021/02/08";
             adapter.list.add(p);
@@ -63,5 +63,6 @@ public class HomeActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         adapter = new TâcheAdapter();
         recyclerView.setAdapter(adapter);
+
     }
 }
