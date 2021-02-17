@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">KickMyB</string>
+    <string name="accueil">Accueil</string>
+    <string name="ajout_de_t_che">Ajout de tâche</string>
+    <string name="d_connexion">Déconnexion</string>
+    <string name="dOpen">Close</string>
+    <string name="dClose">Open</string>
 </resources>
