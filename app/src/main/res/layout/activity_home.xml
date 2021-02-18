@@ -20,11 +20,15 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="18dp"
+            android:text="Nouvelle tâche" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

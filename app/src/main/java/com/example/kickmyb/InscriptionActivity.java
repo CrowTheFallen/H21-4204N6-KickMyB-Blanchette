@@ -17,6 +17,7 @@ public class InscriptionActivity extends AppCompatActivity {
         binding = ActivityInscriptionBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        setTitle("Inscription");
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -16,6 +16,7 @@ public class ConnectionActivity extends AppCompatActivity {
         binding = ActivityConnectionBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        setTitle("Connection");
 
         binding.Connection.setOnClickListener(new View.OnClickListener() {
             @Override

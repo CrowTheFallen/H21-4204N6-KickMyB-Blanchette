@@ -9,13 +9,16 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Inscription" />
+        android:text="Inscription"
+        android:textSize="30dp"
+        android:layout_margin="10dp"/>
 
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_margin="10dp"
         android:inputType="textPersonName"
         android:hint="Username"
          />
@@ -26,12 +29,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
+        android:layout_margin="10dp"
         android:hint="Password"/>
 
     <EditText
         android:id="@+id/editTextTextPassword2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:ems="10"
         android:inputType="textPassword"
         android:hint="Confirmation"/>
@@ -40,5 +45,6 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="Création" />
 </LinearLayout>

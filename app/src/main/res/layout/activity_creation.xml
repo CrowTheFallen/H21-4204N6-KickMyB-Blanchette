@@ -15,28 +15,35 @@
 
         <EditText
             android:id="@+id/editTextTextPersonName2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_margin="10dp"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="Name" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date d'échéance de la tâche" />
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:text="Choisissez la date d'échéance de la tâche :" />
 
         <CalendarView
             android:id="@+id/calendarView"
             android:layout_width="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="-20dp"
+            android:text="Création" />
     </LinearLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

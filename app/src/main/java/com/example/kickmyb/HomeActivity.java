@@ -34,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        setTitle("Accueil");
 
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,13 +50,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.dOpen);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(R.string.dClose);
+                //getSupportActionBar().setTitle(R.string.dClose);
             }
         };
 

@@ -24,6 +24,7 @@ public class CreationActivity extends AppCompatActivity {
         binding = ActivityCreationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        setTitle("Création de la tâche");
 
         binding.button3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,13 +40,11 @@ public class CreationActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.dOpen);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(R.string.dClose);
             }
         };
 

@@ -25,19 +25,28 @@ public class ConsultationActivity extends AppCompatActivity {
         binding = ActivityConsultationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        setTitle("Consultation");
+
+        binding.button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ConsultationActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         final String ContenueNom = getIntent().getStringExtra("NomTâche");
-        binding.textView5.setText(ContenueNom);
+        binding.textView5.setText("Nom de la tâche : " + ContenueNom);
 
         final String ContenuePourcent = getIntent().getStringExtra("Pourcentage");
         progr = Integer.parseInt(ContenuePourcent.replace("%",""));
-        binding.textView6.setText(ContenuePourcent);
+        //binding.textView6.setText(ContenuePourcent);
 
         final String ContenueTempsÉcoulé = getIntent().getStringExtra("TempsÉcoulé");
-        binding.textView7.setText(ContenueTempsÉcoulé);
+        binding.textView7.setText("Date de départ : "+ContenueTempsÉcoulé);
 
         final String ContenueDateLimite = getIntent().getStringExtra("DateLimite");
-        binding.textView8.setText(ContenueDateLimite);
+        binding.textView8.setText("Date limite : "+ContenueDateLimite);
 
         updateProgressBar();
         binding.buttonIncr.setOnClickListener(new View.OnClickListener() {
@@ -64,13 +73,11 @@ public class ConsultationActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.dOpen);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(R.string.dClose);
             }
         };
 
