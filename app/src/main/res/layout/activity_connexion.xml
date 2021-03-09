@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConnectionActivity"
+    tools:context=".ConnexionActivity"
     android:orientation="vertical">
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Connection" />
+        android:text="Connexion" />
 
     <TextView
         android:id="@+id/textView3"

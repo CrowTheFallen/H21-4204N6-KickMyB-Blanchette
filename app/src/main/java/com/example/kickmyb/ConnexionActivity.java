@@ -6,22 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.kickmyb.databinding.ActivityConnectionBinding;
+import com.example.kickmyb.databinding.ActivityConnexionBinding;
 
-public class ConnectionActivity extends AppCompatActivity {
-    private ActivityConnectionBinding binding;
+public class ConnexionActivity extends AppCompatActivity {
+    private ActivityConnexionBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityConnectionBinding.inflate(getLayoutInflater());
+        binding = ActivityConnexionBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        setTitle("Connection");
+        setTitle("Connexion");
 
         binding.Connection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ConnectionActivity.this,HomeActivity.class);
+                Intent intent = new Intent(ConnexionActivity.this,HomeActivity.class);
                 startActivity(intent);
             }
         });
@@ -29,7 +29,7 @@ public class ConnectionActivity extends AppCompatActivity {
         binding.Inscription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ConnectionActivity.this,InscriptionActivity.class);
+                Intent intent = new Intent(ConnexionActivity.this,InscriptionActivity.class);
                 startActivity(intent);
             }
         });

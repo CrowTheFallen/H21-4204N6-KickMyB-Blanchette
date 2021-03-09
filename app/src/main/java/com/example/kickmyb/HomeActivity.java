@@ -14,14 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kickmyb.databinding.ActivityCreationBinding;
 import com.example.kickmyb.databinding.ActivityHomeBinding;
-import com.google.android.material.navigation.NavigationView;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 public class HomeActivity extends AppCompatActivity {
@@ -86,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent i2 = new Intent(HomeActivity.this, ConnectionActivity.class);
+                Intent i2 = new Intent(HomeActivity.this, ConnexionActivity.class);
                 drawerLayout.closeDrawers();
                 startActivity(i2);
                 return true;

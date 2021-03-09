@@ -12,7 +12,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.kickmyb.databinding.ActivityConnectionBinding;
 import com.example.kickmyb.databinding.ActivityConsultationBinding;
 
 public class ConsultationActivity extends AppCompatActivity {
@@ -108,7 +107,7 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent i2 = new Intent(ConsultationActivity.this, ConnectionActivity.class);
+                Intent i2 = new Intent(ConsultationActivity.this, ConnexionActivity.class);
                 drawerLayout.closeDrawers();
                 startActivity(i2);
                 return true;
