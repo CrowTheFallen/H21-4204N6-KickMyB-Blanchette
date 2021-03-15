@@ -13,6 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.kickmyb.databinding.ActivityConsultationBinding;
+import com.example.kickmyb.http.RetrofitUtil;
+import com.example.kickmyb.http.Service;
+import com.example.kickmyb.transfer.Utilisateur;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConsultationActivity extends AppCompatActivity {
     private ActivityConsultationBinding binding;
@@ -107,10 +114,26 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent i2 = new Intent(ConsultationActivity.this, ConnexionActivity.class);
-                drawerLayout.closeDrawers();
-                startActivity(i2);
+                Service service = RetrofitUtil.get();
+                Call<String> utilisateurCall = service.Déconection();
+                utilisateurCall.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Intent i2 = new Intent(ConsultationActivity.this, ConnexionActivity.class);
+                            drawerLayout.closeDrawers();
+                            startActivity(i2);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
                 return true;
+
+
             }
         });
     }

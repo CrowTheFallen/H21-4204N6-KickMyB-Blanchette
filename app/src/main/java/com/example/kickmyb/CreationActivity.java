@@ -13,6 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.kickmyb.databinding.ActivityCreationBinding;
+import com.example.kickmyb.http.RetrofitUtil;
+import com.example.kickmyb.http.Service;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CreationActivity extends AppCompatActivity {
     private ActivityCreationBinding binding;
@@ -74,9 +80,24 @@ public class CreationActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent i2 = new Intent(CreationActivity.this, ConnexionActivity.class);
-                drawerLayout.closeDrawers();
-                startActivity(i2);
+                Service service = RetrofitUtil.get();
+                Call<String> utilisateurCall = service.Déconection();
+                utilisateurCall.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Intent i2 = new Intent(CreationActivity.this, ConnexionActivity.class);
+                            drawerLayout.closeDrawers();
+                            startActivity(i2);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+
                 return true;
             }
         });

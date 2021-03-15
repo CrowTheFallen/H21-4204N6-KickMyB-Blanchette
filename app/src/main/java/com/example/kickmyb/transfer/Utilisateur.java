@@ -2,7 +2,12 @@ package com.example.kickmyb.transfer;
 
 public class Utilisateur {
 
-    public String login;
-    public Long id;
-    public Long followers;
+    final String username;
+    final String password;
+
+    public Utilisateur(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
 }

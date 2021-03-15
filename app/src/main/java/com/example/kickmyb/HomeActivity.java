@@ -15,8 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kickmyb.databinding.ActivityHomeBinding;
+import com.example.kickmyb.http.RetrofitUtil;
+import com.example.kickmyb.http.Service;
 
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
@@ -80,9 +86,24 @@ public class HomeActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent i2 = new Intent(HomeActivity.this, ConnexionActivity.class);
-                drawerLayout.closeDrawers();
-                startActivity(i2);
+                Service service = RetrofitUtil.get();
+                Call<String> utilisateurCall = service.Déconection();
+                utilisateurCall.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Intent i2 = new Intent(HomeActivity.this, ConnexionActivity.class);
+                            drawerLayout.closeDrawers();
+                            startActivity(i2);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+
                 return true;
             }
         });
