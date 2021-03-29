@@ -9,7 +9,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitUtil {
 
+    private static Service instance;
+
     public static Service get(){
+        if (instance == null) {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -17,8 +20,11 @@ public class RetrofitUtil {
                 .baseUrl("http://10.0.2.2:8080/")
                 .build();
 
-        Service service = retrofit.create(Service.class);
-        return service;
+            instance = retrofit.create(Service.class);
+            return instance;
+        } else {
+            return instance;
+        }
     }
 
     private static OkHttpClient client() {

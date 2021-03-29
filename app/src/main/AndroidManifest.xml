@@ -11,11 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KickMyB">
-        <activity android:name=".CreationActivity"></activity>
-        <activity android:name=".ConsultationActivity"></activity>
-        <activity android:name=".HomeActivity"></activity>
-        <activity android:name=".InscriptionActivity"></activity>
-        <activity android:name=".ConnexionActivity">
+        <activity android:name=".Activities.CreationActivity"></activity>
+        <activity android:name=".Activities.ConsultationActivity"></activity>
+        <activity android:name=".Activities.HomeActivity"></activity>
+        <activity android:name=".Activities.InscriptionActivity"></activity>
+        <activity android:name=".Activities.ConnexionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

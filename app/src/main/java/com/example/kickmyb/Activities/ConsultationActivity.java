@@ -1,10 +1,11 @@
-package com.example.kickmyb;
+package com.example.kickmyb.Activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,10 +13,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.kickmyb.R;
+import com.example.kickmyb.Singleton;
 import com.example.kickmyb.databinding.ActivityConsultationBinding;
 import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
-import com.example.kickmyb.transfer.Utilisateur;
+import com.google.android.material.navigation.NavigationView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,10 +52,10 @@ public class ConsultationActivity extends AppCompatActivity {
         //binding.textView6.setText(ContenuePourcent);
 
         final String ContenueTempsÉcoulé = getIntent().getStringExtra("TempsÉcoulé");
-        binding.textView7.setText("Date de départ : "+ContenueTempsÉcoulé);
+        binding.textView7.setText(""+ContenueTempsÉcoulé);
 
         final String ContenueDateLimite = getIntent().getStringExtra("DateLimite");
-        binding.textView8.setText("Date limite : "+ContenueDateLimite);
+        binding.textView8.setText(""+ContenueDateLimite);
 
         updateProgressBar();
         binding.buttonIncr.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +93,10 @@ public class ConsultationActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nav_user = (TextView) hView.findViewById(R.id.textUser);
+        nav_user.setText(Singleton.getInstance().giveUserName());
 
         binding.navView.getMenu().findItem(R.id.nav_item_one).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

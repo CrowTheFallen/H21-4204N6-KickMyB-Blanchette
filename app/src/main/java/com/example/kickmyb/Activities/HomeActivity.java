@@ -1,10 +1,11 @@
-package com.example.kickmyb;
+package com.example.kickmyb.Activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +15,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kickmyb.R;
+import com.example.kickmyb.Singleton;
+import com.example.kickmyb.transfer.Tâche;
+import com.example.kickmyb.TâcheAdapter;
 import com.example.kickmyb.databinding.ActivityHomeBinding;
 import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
+import com.google.android.material.navigation.NavigationView;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -62,6 +71,10 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nav_user = (TextView) hView.findViewById(R.id.textUser);
+        nav_user.setText(Singleton.getInstance().giveUserName());
 
         binding.navView.getMenu().findItem(R.id.nav_item_one).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -131,14 +144,54 @@ public class HomeActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
+    public String ActivityDifferentitaion(String responseTime) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        ParsePosition pos = new ParsePosition(0);
+        long then = formatter.parse(responseTime, pos).getTime();
+        long now = new Date().getTime();
+
+        long seconds = (now - then) / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+
+        String friendly = null;
+        long num = 0;
+        if (days > 0) {
+            num = days;
+            friendly = days + " day";
+        }
+        else if (hours > 0) {
+            num = hours;
+            friendly = hours + " hour";
+        }
+        else if (minutes > 0) {
+            num = minutes;
+            friendly = minutes + " minute";
+        }
+        else {
+            num = seconds;
+            friendly = seconds + " second";
+        }
+        if (num > 1) {
+            friendly += "s";
+        }
+       return ("Temps écoulé : "+ friendly + " ago");
+
+    }
+
+
+
     private void remplirRecycler() {
         for (int i = 0 ; i < 250 ; i++) {
             Tâche p = new Tâche();
             //Calendar maintenant = Calendar.getInstance();
             p.nom = "Tâche numéro " + i;
             p.pourcentage = new Random().nextInt(11) * 10;
-            p.dateDeCréation = "2021/02/03";
-            p.dateDeFin = "2021/02/08";
+            p.dateDeCréation = ActivityDifferentitaion("22 03 2021");
+                    //"Temps écoulé : " + "2021/02/03";
+            p.dateDeFin = "Date limite : " + "2021/02/08";
             adapter.list.add(p);
         }
         adapter.notifyDataSetChanged();

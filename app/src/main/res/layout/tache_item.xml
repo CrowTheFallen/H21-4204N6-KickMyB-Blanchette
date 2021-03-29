@@ -2,34 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:id="@+id/Layoutobjet"
     android:layout_marginBottom="6dp">
 
     <TextView
         android:id="@+id/NomTâche"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_weight="2"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/Pourcentage"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"/>
-
-    <TextView
         android:id="@+id/TempsÉcoulé"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_weight="1.5"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/DateLimite"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_weight="1.5"
         android:layout_height="wrap_content" />
 
+    <!--<TextView
+        android:id="@+id/Pourcentage"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"/> -->
+
+    <ProgressBar
+        android:id="@+id/Pourcentage"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2" />
 
 </LinearLayout>

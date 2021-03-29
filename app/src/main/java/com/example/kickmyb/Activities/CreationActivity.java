@@ -1,10 +1,16 @@
-package com.example.kickmyb;
+package com.example.kickmyb.Activities;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,9 +18,20 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.kickmyb.R;
+import com.example.kickmyb.Singleton;
 import com.example.kickmyb.databinding.ActivityCreationBinding;
 import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
+import com.example.kickmyb.transfer.CreationTâche;
+import com.example.kickmyb.transfer.Utilisateur;
+import com.google.android.material.navigation.NavigationView;
+
+import org.kickmyb.transfer.AddTaskRequest;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,12 +47,68 @@ public class CreationActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         setTitle("Création de la tâche");
+        Service service = RetrofitUtil.get();
+       // binding.button3.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+       //     public void onClick(View view) {
+        //        Intent intent = new Intent(CreationActivity.this, HomeActivity.class);
+       //         startActivity(intent);
+        //    }
+       // });
+        final String[] année = new String[1];
+        final String[] mois = new String[1];
+        final String[] jour = new String[1];
+        binding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+            @Override
+            public void onSelectedDayChange(CalendarView arg0, int year, int month,
+                                            int date) {
+                année[0] = ""+year;
+                if(month < 10){
+                    mois[0] = "0"+month;
+                }
+                else{
+                    mois[0] = ""+month;
+                }
+                if(date < 10)
+                    jour[0] = "0"+date;
+                else
+                    jour[0] = ""+date;
+            }
+
+        });
 
         binding.button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreationActivity.this,HomeActivity.class);
-                startActivity(intent);
+                String deadLine= année[0] + "-"+mois[0]+"-"+jour[0];
+                Date dateString = null;
+                try {
+                    dateString = new SimpleDateFormat("yyyy-MM-dd").parse(deadLine);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String name = binding.editTextTextPersonName2.getText().toString();
+                AddTaskRequest addTaskRequest = new AddTaskRequest();
+                addTaskRequest.name = name;
+                addTaskRequest.deadLine = dateString;
+                Call<String> CreationdeTache =
+                        service.CreationDeTache(addTaskRequest);
+                //name, deadLine
+                CreationdeTache.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Intent intent = new Intent(CreationActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.i("Erreur",t.toString());
+                    }
+                });
             }
         });
 
@@ -56,7 +129,10 @@ public class CreationActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nav_user = (TextView) hView.findViewById(R.id.textUser);
+        nav_user.setText(Singleton.getInstance().giveUserName());
         binding.navView.getMenu().findItem(R.id.nav_item_one).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

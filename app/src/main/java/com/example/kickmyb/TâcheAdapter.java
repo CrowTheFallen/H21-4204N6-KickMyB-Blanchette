@@ -6,9 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kickmyb.Activities.ConsultationActivity;
+import com.example.kickmyb.transfer.Tâche;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +26,8 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView NomTâche;
-        public TextView Pourcentage;
+        //public TextView Pourcentage;
+        public ProgressBar Pourcentage;
         public TextView TempsÉcoulé;
         public TextView DateLimite;
         public MyViewHolder(LinearLayout v) {
@@ -35,11 +40,12 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(),ConsultationActivity.class);
+                    Intent intent = new Intent(view.getContext(), ConsultationActivity.class);
                     intent.putExtra("NomTâche", NomTâche.getText());
-                    intent.putExtra("Pourcentage", Pourcentage.getText());
+                    //intent.putExtra("Pourcentage", Pourcentage.getText());
+                    intent.putExtra("Pourcentage", ""+Pourcentage.getProgress());
                     intent.putExtra("TempsÉcoulé", TempsÉcoulé.getText());
-                    intent.putExtra("DateLimite", DateLimite.getText());
+                    intent.putExtra("DateLimite",  DateLimite.getText());
                     view.getContext().startActivity(intent);
                 }
             });
@@ -70,7 +76,8 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
         // - replace the contents of the view with that element
         Tâche tâcheCourante = list.get(position);
         holder.NomTâche.setText(tâcheCourante.nom);
-        holder.Pourcentage.setText(""+tâcheCourante.pourcentage +"%");
+        //holder.Pourcentage.setProgress(""+tâcheCourante.pourcentage +"%");
+        holder.Pourcentage.setProgress(tâcheCourante.pourcentage);
         holder.TempsÉcoulé.setText(""+tâcheCourante.dateDeCréation);
         holder.DateLimite.setText(""+tâcheCourante.dateDeFin );
         Log.i("DEBOGAGE", "appel a onBindViewHolder " + position);
