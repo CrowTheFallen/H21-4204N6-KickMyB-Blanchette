@@ -65,15 +65,17 @@ public class CreationActivity extends AppCompatActivity {
                                             int date) {
                 année[0] = ""+year;
                 if(month < 10){
-                    mois[0] = "0"+month;
+                    mois[0] = "0"+(month + 1);
                 }
                 else{
-                    mois[0] = ""+month;
+                    mois[0] = ""+(month + 1);
                 }
                 if(date < 10)
                     jour[0] = "0"+date;
                 else
                     jour[0] = ""+date;
+
+                Toast.makeText(CreationActivity.this,année[0] + "-"+mois[0]+"-"+jour[0],Toast.LENGTH_LONG).show();
             }
 
         });

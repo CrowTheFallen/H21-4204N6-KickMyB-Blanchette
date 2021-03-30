@@ -3,6 +3,7 @@ package com.example.kickmyb.Activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -24,9 +25,13 @@ import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
 import com.google.android.material.navigation.NavigationView;
 
+import org.kickmyb.transfer.HomeItemResponse;
+
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -37,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
     private ActionBarDrawerToggle toggle;
     TâcheAdapter adapter;
+    Service service = RetrofitUtil.get();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,17 +190,63 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void remplirRecycler() {
-        for (int i = 0 ; i < 250 ; i++) {
-            Tâche p = new Tâche();
+        //for (int i = 0 ; i < 250 ; i++) {
+
+            Call<List<HomeItemResponse>> CreationdeTache =
+                    service.ConsultationDeTache();
+            CreationdeTache.enqueue(new Callback<List<HomeItemResponse>>() {
+                @Override
+                public void onResponse(Call<List<HomeItemResponse>> call, Response<List<HomeItemResponse>> response) {
+                    if(response.isSuccessful()){
+                        List<HomeItemResponse> resultat = response.body();
+                        for (int i = 0; i < resultat.size();i++) {
+                            Tâche p = new Tâche();
+
+                            final String OLD_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
+                            final String NEW_FORMAT = "yyyy/MM/dd";
+                            String oldDateString = String.valueOf(resultat.get(i).deadline);
+                            String newDateString;
+
+                            SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+                            Date d = null;
+                            try {
+                                d = sdf.parse(oldDateString);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            sdf.applyPattern(NEW_FORMAT);
+                            newDateString = sdf.format(d);
+
+
+                            p.nom = "Nom de la tâche : " + resultat.get(i).name;
+                            p.pourcentage = resultat.get(i).percentageDone;
+                            p.dateDeCréation = "Moments depuis la création : " + resultat.get(i).percentageTimeSpent;
+                            p.dateDeFin = "Date limite : " + newDateString;
+                            adapter.list.add(p);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<HomeItemResponse>> call, Throwable t) {
+                    Log.i("Erreur",t.toString());
+                }
+            });
+
+
+
+
+            //Tâche p = new Tâche();
             //Calendar maintenant = Calendar.getInstance();
-            p.nom = "Tâche numéro " + i;
-            p.pourcentage = new Random().nextInt(11) * 10;
-            p.dateDeCréation = ActivityDifferentitaion("22 03 2021");
+            //p.nom = "Tâche numéro " + i;
+            //p.pourcentage = new Random().nextInt(11) * 10;
+            //p.dateDeCréation = ActivityDifferentitaion("22 03 2021");
                     //"Temps écoulé : " + "2021/02/03";
-            p.dateDeFin = "Date limite : " + "2021/02/08";
-            adapter.list.add(p);
-        }
-        adapter.notifyDataSetChanged();
+            //p.dateDeFin = "Date limite : " + "2021/02/08";
+            //adapter.list.add(p);
+        //}
+
     }
 
     private void initRecycler(){

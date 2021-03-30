@@ -5,6 +5,7 @@ import com.example.kickmyb.transfer.Tâche;
 import com.example.kickmyb.transfer.Utilisateur;
 
 import org.kickmyb.transfer.AddTaskRequest;
+import org.kickmyb.transfer.HomeItemResponse;
 import org.kickmyb.transfer.SigninRequest;
 import org.kickmyb.transfer.SigninResponse;
 
@@ -22,7 +23,7 @@ public interface Service {
     Call<String> listReposString(@Path("utilisateur") String utilisateur);
 
     @GET("api/home")
-    Call<List<Tâche>> ConsultationDeTache();
+    Call<List<HomeItemResponse>> ConsultationDeTache();
 
     @POST("api/add")
     Call<String> CreationDeTache(@Body AddTaskRequest body);
