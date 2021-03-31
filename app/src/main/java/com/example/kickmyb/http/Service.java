@@ -8,6 +8,7 @@ import org.kickmyb.transfer.AddTaskRequest;
 import org.kickmyb.transfer.HomeItemResponse;
 import org.kickmyb.transfer.SigninRequest;
 import org.kickmyb.transfer.SigninResponse;
+import org.kickmyb.transfer.TaskDetailResponse;
 
 import java.util.List;
 
@@ -21,6 +22,12 @@ public interface Service {
 
     @GET("users/{utilisateur}/repos")
     Call<String> listReposString(@Path("utilisateur") String utilisateur);
+
+    @GET("api/progress/{id}/{valeur}")
+    Call<TaskDetailResponse> NouveauPourcent(@Path("id") Long id, @Path("valeur") int valeur);
+
+    @GET("api/detail/{id}")
+    Call<TaskDetailResponse> Consultation(@Path("id") String id);
 
     @GET("api/home")
     Call<List<HomeItemResponse>> ConsultationDeTache();

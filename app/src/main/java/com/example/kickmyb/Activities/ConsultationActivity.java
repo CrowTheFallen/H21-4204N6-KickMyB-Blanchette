@@ -3,6 +3,7 @@ package com.example.kickmyb.Activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -20,6 +21,12 @@ import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
 import com.google.android.material.navigation.NavigationView;
 
+import org.kickmyb.transfer.TaskDetailResponse;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +34,9 @@ import retrofit2.Response;
 public class ConsultationActivity extends AppCompatActivity {
     private ActivityConsultationBinding binding;
     private ActionBarDrawerToggle toggle;
+    Service service = RetrofitUtil.get();
     private int progr = 0;
+    private Long id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,28 +45,69 @@ public class ConsultationActivity extends AppCompatActivity {
         setContentView(view);
         setTitle("Consultation");
 
+
+        Call<TaskDetailResponse> consultation =
+                service.Consultation("2");
+        consultation.enqueue(new Callback<TaskDetailResponse>() {
+           @Override
+           public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
+              if (response.isSuccessful()) {
+                  final String OLD_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
+                  final String NEW_FORMAT = "yyyy/MM/dd";
+                  String oldDateString = String.valueOf(response.body().deadLine);
+                  String newDateString;
+
+                 SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+                  Date d = null;
+                 try {
+                    d = sdf.parse(oldDateString);
+              } catch (ParseException e) {
+                   e.printStackTrace();
+               }
+              sdf.applyPattern(NEW_FORMAT);
+              newDateString = sdf.format(d);
+
+              id = response.body().id;
+              binding.textView5.setText("Nom de la tâche : " + response.body().name);
+              progr = response.body().percentageDone;
+              binding.textView7.setText(""+response.body().percentageTimeSpent);
+              binding.textView8.setText(""+newDateString);
+              updateProgressBar();
+              }
+           }
+
+         @Override
+         public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
+             Log.i("Erreur", t.toString());
+         }
+
+        });
+
+
+
         binding.button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ConsultationActivity.this, HomeActivity.class);
                 startActivity(intent);
+
+
             }
         });
 
-        final String ContenueNom = getIntent().getStringExtra("NomTâche");
-        binding.textView5.setText("Nom de la tâche : " + ContenueNom);
+        //final String ContenueNom = getIntent().getStringExtra("NomTâche");
+        //binding.textView5.setText("Nom de la tâche : " + ContenueNom);
 
-        final String ContenuePourcent = getIntent().getStringExtra("Pourcentage");
-        progr = Integer.parseInt(ContenuePourcent.replace("%",""));
-        //binding.textView6.setText(ContenuePourcent);
+        //final String ContenuePourcent = getIntent().getStringExtra("Pourcentage");
+        //progr = Integer.parseInt(ContenuePourcent.replace("%",""));
 
-        final String ContenueTempsÉcoulé = getIntent().getStringExtra("TempsÉcoulé");
-        binding.textView7.setText(""+ContenueTempsÉcoulé);
+        //final String ContenueTempsÉcoulé = getIntent().getStringExtra("TempsÉcoulé");
+        //binding.textView7.setText(""+ContenueTempsÉcoulé);
 
-        final String ContenueDateLimite = getIntent().getStringExtra("DateLimite");
-        binding.textView8.setText(""+ContenueDateLimite);
+        //final String ContenueDateLimite = getIntent().getStringExtra("DateLimite");
+        //binding.textView8.setText(""+ContenueDateLimite);
 
-        updateProgressBar();
+
         binding.buttonIncr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +171,7 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Service service = RetrofitUtil.get();
+                //Service service = RetrofitUtil.get();
                 Call<String> utilisateurCall = service.Déconection();
                 utilisateurCall.enqueue(new Callback<String>() {
                     @Override

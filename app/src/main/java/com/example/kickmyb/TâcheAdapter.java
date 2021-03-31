@@ -12,10 +12,22 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kickmyb.Activities.ConsultationActivity;
+import com.example.kickmyb.http.RetrofitUtil;
+import com.example.kickmyb.http.Service;
 import com.example.kickmyb.transfer.Tâche;
 
+import org.kickmyb.transfer.HomeItemResponse;
+import org.kickmyb.transfer.TaskDetailResponse;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHolder> {
     public List<Tâche> list;
@@ -41,11 +53,55 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ConsultationActivity.class);
-                    intent.putExtra("NomTâche", NomTâche.getText());
-                    //intent.putExtra("Pourcentage", Pourcentage.getText());
-                    intent.putExtra("Pourcentage", ""+Pourcentage.getProgress());
-                    intent.putExtra("TempsÉcoulé", TempsÉcoulé.getText());
-                    intent.putExtra("DateLimite",  DateLimite.getText());
+                    //Service service = RetrofitUtil.get();
+
+
+                    //Call<TaskDetailResponse> consultation =
+                    //        service.Consultation("2");
+                    //consultation.enqueue(new Callback<TaskDetailResponse>() {
+                     //   @Override
+                     //   public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
+                      //      if (response.isSuccessful()) {
+                      //          final String OLD_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
+                      //          final String NEW_FORMAT = "yyyy/MM/dd";
+                      //          String oldDateString = String.valueOf(response.body().deadLine);
+                      //          String newDateString;
+
+                       //         SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+                      //          Date d = null;
+                       //         try {
+                        //            d = sdf.parse(oldDateString);
+                          //      } catch (ParseException e) {
+                         //           e.printStackTrace();
+                         //       }
+                          //      sdf.applyPattern(NEW_FORMAT);
+                          //      newDateString = sdf.format(d);
+
+                           //     intent.putExtra("NomTâche", response.body().name);
+                           //     intent.putExtra("Pourcentage", ""+response.body().percentageDone);
+                           //     intent.putExtra("TempsÉcoulé","Moments depuis la création : "+ response.body().percentageTimeSpent);
+                            //    intent.putExtra("DateLimite", "Date limite : " + newDateString);
+                            //    intent.putExtra("id", response.body().id);
+
+                             //   view.getContext().startActivity(intent);
+                            //}
+                       // }
+
+                       // @Override
+                       // public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
+                       //     Log.i("Erreur", t.toString());
+                       // }
+                   // });
+
+                    //intent.putExtra("NomTâche", NomTâche.getText());
+                    //intent.putExtra("Pourcentage", ""+Pourcentage.getProgress());
+                    //intent.putExtra("TempsÉcoulé", TempsÉcoulé.getText());
+                    //intent.putExtra("DateLimite",  DateLimite.getText());
+
+
+
+
+
                     view.getContext().startActivity(intent);
                 }
             });
