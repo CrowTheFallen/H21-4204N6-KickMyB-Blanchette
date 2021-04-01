@@ -37,6 +37,7 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+        public Long id;
         public TextView NomTâche;
         //public TextView Pourcentage;
         public ProgressBar Pourcentage;
@@ -53,55 +54,7 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ConsultationActivity.class);
-                    //Service service = RetrofitUtil.get();
-
-
-                    //Call<TaskDetailResponse> consultation =
-                    //        service.Consultation("2");
-                    //consultation.enqueue(new Callback<TaskDetailResponse>() {
-                     //   @Override
-                     //   public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
-                      //      if (response.isSuccessful()) {
-                      //          final String OLD_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
-                      //          final String NEW_FORMAT = "yyyy/MM/dd";
-                      //          String oldDateString = String.valueOf(response.body().deadLine);
-                      //          String newDateString;
-
-                       //         SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
-                      //          Date d = null;
-                       //         try {
-                        //            d = sdf.parse(oldDateString);
-                          //      } catch (ParseException e) {
-                         //           e.printStackTrace();
-                         //       }
-                          //      sdf.applyPattern(NEW_FORMAT);
-                          //      newDateString = sdf.format(d);
-
-                           //     intent.putExtra("NomTâche", response.body().name);
-                           //     intent.putExtra("Pourcentage", ""+response.body().percentageDone);
-                           //     intent.putExtra("TempsÉcoulé","Moments depuis la création : "+ response.body().percentageTimeSpent);
-                            //    intent.putExtra("DateLimite", "Date limite : " + newDateString);
-                            //    intent.putExtra("id", response.body().id);
-
-                             //   view.getContext().startActivity(intent);
-                            //}
-                       // }
-
-                       // @Override
-                       // public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
-                       //     Log.i("Erreur", t.toString());
-                       // }
-                   // });
-
-                    //intent.putExtra("NomTâche", NomTâche.getText());
-                    //intent.putExtra("Pourcentage", ""+Pourcentage.getProgress());
-                    //intent.putExtra("TempsÉcoulé", TempsÉcoulé.getText());
-                    //intent.putExtra("DateLimite",  DateLimite.getText());
-
-
-
-
-
+                    intent.putExtra("id", id);
                     view.getContext().startActivity(intent);
                 }
             });
@@ -131,6 +84,7 @@ public class TâcheAdapter extends RecyclerView.Adapter<TâcheAdapter.MyViewHold
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         Tâche tâcheCourante = list.get(position);
+        holder.id = tâcheCourante.id;
         holder.NomTâche.setText(tâcheCourante.nom);
         //holder.Pourcentage.setProgress(""+tâcheCourante.pourcentage +"%");
         holder.Pourcentage.setProgress(tâcheCourante.pourcentage);

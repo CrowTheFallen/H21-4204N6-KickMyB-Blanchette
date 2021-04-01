@@ -20,14 +20,11 @@ import retrofit2.http.Path;
 
 public interface Service {
 
-    @GET("users/{utilisateur}/repos")
-    Call<String> listReposString(@Path("utilisateur") String utilisateur);
-
     @GET("api/progress/{id}/{valeur}")
     Call<TaskDetailResponse> NouveauPourcent(@Path("id") Long id, @Path("valeur") int valeur);
 
     @GET("api/detail/{id}")
-    Call<TaskDetailResponse> Consultation(@Path("id") String id);
+    Call<TaskDetailResponse> Consultation(@Path("id") Long id);
 
     @GET("api/home")
     Call<List<HomeItemResponse>> ConsultationDeTache();

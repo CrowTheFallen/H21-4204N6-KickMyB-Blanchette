@@ -218,6 +218,7 @@ public class HomeActivity extends AppCompatActivity {
                             newDateString = sdf.format(d);
 
 
+                            p.id = resultat.get(i).id;
                             p.nom = "Nom de la tâche : " + resultat.get(i).name;
                             p.pourcentage = resultat.get(i).percentageDone;
                             p.dateDeCréation = "Moments depuis la création : " + resultat.get(i).percentageTimeSpent;

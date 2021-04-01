@@ -45,9 +45,9 @@ public class ConsultationActivity extends AppCompatActivity {
         setContentView(view);
         setTitle("Consultation");
 
-
+        final Long idtâche = getIntent().getLongExtra("id",2);
         Call<TaskDetailResponse> consultation =
-                service.Consultation("2");
+                service.Consultation(idtâche);
         consultation.enqueue(new Callback<TaskDetailResponse>() {
            @Override
            public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
@@ -70,8 +70,8 @@ public class ConsultationActivity extends AppCompatActivity {
               id = response.body().id;
               binding.textView5.setText("Nom de la tâche : " + response.body().name);
               progr = response.body().percentageDone;
-              binding.textView7.setText(""+response.body().percentageTimeSpent);
-              binding.textView8.setText(""+newDateString);
+              binding.textView7.setText("Moments depuis la création : "+response.body().percentageTimeSpent);
+              binding.textView8.setText("Date limite : " +newDateString);
               updateProgressBar();
               }
            }
@@ -88,24 +88,25 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Call<TaskDetailResponse> CreationdeTache =
+                        service.NouveauPourcent(id,progr);
+                CreationdeTache.enqueue(new Callback<TaskDetailResponse>() {
+                    @Override
+                    public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
+
+                    }
+                });
                 Intent intent = new Intent(ConsultationActivity.this, HomeActivity.class);
                 startActivity(intent);
-
-
             }
         });
 
-        //final String ContenueNom = getIntent().getStringExtra("NomTâche");
-        //binding.textView5.setText("Nom de la tâche : " + ContenueNom);
-
-        //final String ContenuePourcent = getIntent().getStringExtra("Pourcentage");
-        //progr = Integer.parseInt(ContenuePourcent.replace("%",""));
-
-        //final String ContenueTempsÉcoulé = getIntent().getStringExtra("TempsÉcoulé");
-        //binding.textView7.setText(""+ContenueTempsÉcoulé);
-
-        //final String ContenueDateLimite = getIntent().getStringExtra("DateLimite");
-        //binding.textView8.setText(""+ContenueDateLimite);
 
 
         binding.buttonIncr.setOnClickListener(new View.OnClickListener() {
