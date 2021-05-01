@@ -88,7 +88,7 @@
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Modifier"
+                android:text="@string/Activity_consultation_changeButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/button_incr"
                 app:layout_constraintStart_toStartOf="@+id/button_decr"

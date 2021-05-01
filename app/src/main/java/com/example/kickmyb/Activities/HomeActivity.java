@@ -26,12 +26,14 @@ import com.example.kickmyb.http.Service;
 import com.google.android.material.navigation.NavigationView;
 
 import org.kickmyb.transfer.HomeItemResponse;
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -49,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        setTitle("Accueil");
+        setTitle(R.string.HomeActivity_title);
 
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,42 +152,42 @@ public class HomeActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
-    public String ActivityDifferentitaion(String responseTime) {
+    //public String ActivityDifferentitaion(String responseTime) {
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
-        ParsePosition pos = new ParsePosition(0);
-        long then = formatter.parse(responseTime, pos).getTime();
-        long now = new Date().getTime();
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        //ParsePosition pos = new ParsePosition(0);
+        //long then = formatter.parse(responseTime, pos).getTime();
+        //long now = new Date().getTime();
 
-        long seconds = (now - then) / 1000;
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        long days = hours / 24;
+        //long seconds = (now - then) / 1000;
+        //long minutes = seconds / 60;
+        //long hours = minutes / 60;
+        //long days = hours / 24;
 
-        String friendly = null;
-        long num = 0;
-        if (days > 0) {
-            num = days;
-            friendly = days + " day";
-        }
-        else if (hours > 0) {
-            num = hours;
-            friendly = hours + " hour";
-        }
-        else if (minutes > 0) {
-            num = minutes;
-            friendly = minutes + " minute";
-        }
-        else {
-            num = seconds;
-            friendly = seconds + " second";
-        }
-        if (num > 1) {
-            friendly += "s";
-        }
-       return ("Temps écoulé : "+ friendly + " ago");
+        //String friendly = null;
+        //long num = 0;
+        //if (days > 0) {
+        //    num = days;
+         //   friendly = days + " day";
+        //}
+        //else if (hours > 0) {
+        //    num = hours;
+         //   friendly = hours + " hour";
+        //}
+        //else if (minutes > 0) {
+           // num = minutes;
+            //friendly = minutes + " minute";
+        //}
+        //else {
+            //num = seconds;
+            //friendly = seconds + " second";
+        //}
+        // (num > 1) {
+            //friendly += "s";
+        //}
+       //return ("Temps écoulé : "+ friendly + " ago");
 
-    }
+    //}
 
 
 
@@ -207,7 +209,7 @@ public class HomeActivity extends AppCompatActivity {
                             String oldDateString = String.valueOf(resultat.get(i).deadline);
                             String newDateString;
 
-                            SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+                            SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT, Locale.ENGLISH);
                             Date d = null;
                             try {
                                 d = sdf.parse(oldDateString);
@@ -219,10 +221,13 @@ public class HomeActivity extends AppCompatActivity {
 
 
                             p.id = resultat.get(i).id;
-                            p.nom = "Nom de la tâche : " + resultat.get(i).name;
+                            String TaskName = getString(R.string.ConsultationActivity_TaskName);
+                            p.nom =  TaskName + " " + resultat.get(i).name;
                             p.pourcentage = resultat.get(i).percentageDone;
-                            p.dateDeCréation = "Moments depuis la création : " + resultat.get(i).percentageTimeSpent;
-                            p.dateDeFin = "Date limite : " + newDateString;
+                            String TimeSince = getString(R.string.ConsultationActivity_TimeSinceCreation);
+                            p.dateDeCréation = TimeSince + " " + resultat.get(i).percentageTimeSpent;
+                            String Limit = getString(R.string.ConsultationActivity_Limit);
+                            p.dateDeFin = Limit + " " + newDateString;
                             adapter.list.add(p);
                         }
                         adapter.notifyDataSetChanged();

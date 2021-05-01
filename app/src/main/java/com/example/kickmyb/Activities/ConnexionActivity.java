@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.kickmyb.R;
 import com.example.kickmyb.Singleton;
 import com.example.kickmyb.databinding.ActivityConnexionBinding;
 import com.example.kickmyb.http.RetrofitUtil;
@@ -27,7 +28,7 @@ public class ConnexionActivity extends AppCompatActivity {
         binding = ActivityConnexionBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        setTitle("Connexion");
+        setTitle(R.string.ConnexionActivity_title);
 
         Service service = RetrofitUtil.get();
 

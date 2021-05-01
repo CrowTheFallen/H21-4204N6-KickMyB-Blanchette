@@ -32,6 +32,7 @@ import org.kickmyb.transfer.AddTaskRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,7 +47,7 @@ public class CreationActivity extends AppCompatActivity {
         binding = ActivityCreationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        setTitle("Création de la tâche");
+        setTitle(R.string.CreationActivity_title);
         Service service = RetrofitUtil.get();
        // binding.button3.setOnClickListener(new View.OnClickListener() {
         //    @Override
@@ -58,6 +59,7 @@ public class CreationActivity extends AppCompatActivity {
         final String[] année = new String[1];
         final String[] mois = new String[1];
         final String[] jour = new String[1];
+
         binding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
@@ -86,7 +88,7 @@ public class CreationActivity extends AppCompatActivity {
                 String deadLine= année[0] + "-"+mois[0]+"-"+jour[0];
                 Date dateString = null;
                 try {
-                    dateString = new SimpleDateFormat("yyyy-MM-dd").parse(deadLine);
+                    dateString = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).parse(deadLine);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

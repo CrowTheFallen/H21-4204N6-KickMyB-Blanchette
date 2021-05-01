@@ -1,8 +1,32 @@
 <resources>
     <string name="app_name">KickMyB</string>
-    <string name="accueil">Accueil</string>
-    <string name="ajout_de_t_che">Ajout de tâche</string>
-    <string name="d_connexion">Déconnexion</string>
+    <string name="home">Home</string>
+    <string name="addtaskmenue">Add task</string>
+    <string name="d_connexion">Disconnect</string>
     <string name="dOpen">Close</string>
     <string name="dClose">Open</string>
+    <string name="activity_connecion_connectionTv">Connection :</string>
+    <string name="activity_connection_usernamehint">Username</string>
+    <string name="activity_connection_passwordhint">Password</string>
+    <string name="activity_connection_connexionButton">Connection</string>
+    <string name="activity_connection_no_account_Tv">No account yet? Register!</string>
+    <string name="activity_connection_inscriptionButton">registration</string>
+    <string name="activity_home_NewTaskButton">New task</string>
+    <string name="Activity_consultation_changeButton">Change</string>
+    <string name="activity_creation_nameHint">Name</string>
+    <string name="Activity_creation_expiration_dateTv">Choose the due date of the task :</string>
+    <string name="Activity_creation_creationButton">Creation</string>
+    <string name="Activity_inscription_inscriptionTv">Inscription</string>
+    <string name="Activity_inscription_usernameHint">Username</string>
+    <string name="Activity_inscription_passwordHint">Password</string>
+    <string name="Activity_inscription_confirmationHint">Confirmation</string>
+    <string name="Activity_inscription_creationButton">Creation</string>
+    <string name="ConnexionActivity_title">Connection</string>
+    <string name="ConsultationActivity_title">Consultation</string>
+    <string name="ConsultationActivity_TaskName">Task name : </string>
+    <string name="ConsultationActivity_TimeSinceCreation">Time since creation : </string>
+    <string name="ConsultationActivity_Limit">Deadline : </string>
+    <string name="CreationActivity_title">Creation of the task</string>
+    <string name="InscriptionActivity_title">Inscription</string>
+    <string name="HomeActivity_title">Home</string>
 </resources>

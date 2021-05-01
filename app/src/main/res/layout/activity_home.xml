@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="18dp"
-            android:text="Nouvelle tâche" />
+            android:text="@string/activity_home_NewTaskButton" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

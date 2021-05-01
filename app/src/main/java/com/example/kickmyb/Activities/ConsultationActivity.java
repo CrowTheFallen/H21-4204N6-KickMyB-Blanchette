@@ -26,6 +26,7 @@ import org.kickmyb.transfer.TaskDetailResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +44,7 @@ public class ConsultationActivity extends AppCompatActivity {
         binding = ActivityConsultationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        setTitle("Consultation");
+        setTitle(R.string.ConsultationActivity_title);
 
         final Long idtâche = getIntent().getLongExtra("id",2);
         Call<TaskDetailResponse> consultation =
@@ -57,7 +58,7 @@ public class ConsultationActivity extends AppCompatActivity {
                   String oldDateString = String.valueOf(response.body().deadLine);
                   String newDateString;
 
-                 SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+                 SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT, Locale.ENGLISH);
                   Date d = null;
                  try {
                     d = sdf.parse(oldDateString);
@@ -68,10 +69,13 @@ public class ConsultationActivity extends AppCompatActivity {
               newDateString = sdf.format(d);
 
               id = response.body().id;
-              binding.textView5.setText("Nom de la tâche : " + response.body().name);
+              String TaskName = getString(R.string.ConsultationActivity_TaskName);
+              binding.textView5.setText(TaskName + " " + response.body().name);
               progr = response.body().percentageDone;
-              binding.textView7.setText("Moments depuis la création : "+response.body().percentageTimeSpent);
-              binding.textView8.setText("Date limite : " +newDateString);
+              String TimeSince = getString(R.string.ConsultationActivity_TimeSinceCreation);
+              binding.textView7.setText(TimeSince + " "+response.body().percentageTimeSpent);
+              String Limit = getString(R.string.ConsultationActivity_Limit);
+              binding.textView8.setText(Limit + " " +newDateString);
               updateProgressBar();
               }
            }

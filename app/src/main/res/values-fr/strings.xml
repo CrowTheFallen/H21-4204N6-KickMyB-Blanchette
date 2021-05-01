@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KickMyB</string>
+    <string name="home">Accueil</string>
+    <string name="addtaskmenue">Ajout de tâche</string>
+    <string name="d_connexion">Déconnexion</string>
+    <string name="dOpen">Fermé</string>
+    <string name="dClose">Ouvert</string>
+    <string name="activity_connecion_connectionTv">Connexion :</string>
+    <string name="activity_connection_usernamehint">Nom d\'utilisateur</string>
+    <string name="activity_connection_passwordhint">Mot de passe</string>
+    <string name="activity_connection_connexionButton">Connexion</string>
+    <string name="activity_connection_no_account_Tv">Pas encore de compte? Inscrivez-vous!</string>
+    <string name="activity_connection_inscriptionButton">Inscription</string>
+    <string name="activity_home_NewTaskButton">Nouvelle tâche</string>
+    <string name="Activity_consultation_changeButton">Modifier</string>
+    <string name="activity_creation_nameHint">Nom</string>
+    <string name="Activity_creation_expiration_dateTv">Choisissez la date d\'échéance de la tâche :</string>
+    <string name="Activity_creation_creationButton">Création</string>
+    <string name="Activity_inscription_inscriptionTv">Inscription</string>
+    <string name="Activity_inscription_usernameHint">Nom d\'utilisateur</string>
+    <string name="Activity_inscription_passwordHint">Mot de passe</string>
+    <string name="Activity_inscription_confirmationHint">Confirmation</string>
+    <string name="Activity_inscription_creationButton">Création</string>
+    <string name="ConnexionActivity_title">Connexion</string>
+    <string name="ConsultationActivity_title">Consultation</string>
+    <string name="ConsultationActivity_TaskName">Nom de la tâche : </string>
+    <string name="ConsultationActivity_TimeSinceCreation">Moments depuis la création : </string>
+    <string name="ConsultationActivity_Limit">Date limite : </string>
+    <string name="CreationActivity_title">Création de la tâche</string>
+    <string name="InscriptionActivity_title">Inscription</string>
+    <string name="HomeActivity_title">Accueil</string>
+</resources>

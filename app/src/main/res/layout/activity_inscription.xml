@@ -9,7 +9,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Inscription"
+        android:text="@string/Activity_inscription_inscriptionTv"
         android:textSize="30dp"
         android:layout_margin="10dp"/>
 
@@ -20,7 +20,7 @@
         android:ems="10"
         android:layout_margin="10dp"
         android:inputType="textPersonName"
-        android:hint="Username"
+        android:hint="@string/Activity_inscription_usernameHint"
          />
 
     <EditText
@@ -30,7 +30,7 @@
         android:ems="10"
         android:inputType="textPassword"
         android:layout_margin="10dp"
-        android:hint="Password"/>
+        android:hint="@string/Activity_inscription_passwordHint"/>
 
     <EditText
         android:id="@+id/editTextTextPassword2"
@@ -39,12 +39,12 @@
         android:layout_margin="10dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="Confirmation"/>
+        android:hint="@string/Activity_inscription_confirmationHint"/>
 
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Création" />
+        android:text="@string/Activity_inscription_creationButton" />
 </LinearLayout>

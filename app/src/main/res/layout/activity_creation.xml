@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:inputType="textPersonName"
-            android:hint="Name" />
+            android:hint="@string/activity_creation_nameHint" />
 
         <TextView
             android:id="@+id/textView4"
@@ -28,7 +28,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textSize="20dp"
-            android:text="Choisissez la date d'échéance de la tâche :" />
+            android:text="@string/Activity_creation_expiration_dateTv" />
 
         <CalendarView
             android:id="@+id/calendarView"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="140dp"
             android:layout_marginTop="-20dp"
-            android:text="Création" />
+            android:text="@string/Activity_creation_creationButton" />
     </LinearLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
