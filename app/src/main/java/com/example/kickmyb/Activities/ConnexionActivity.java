@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.kickmyb.R;
 import com.example.kickmyb.Singleton;
 import com.example.kickmyb.databinding.ActivityConnexionBinding;
+import com.example.kickmyb.http.NoConnectivityException;
 import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
 import com.example.kickmyb.transfer.Utilisateur;
@@ -30,10 +33,7 @@ public class ConnexionActivity extends AppCompatActivity {
         setContentView(view);
         setTitle(R.string.ConnexionActivity_title);
 
-        Service service = RetrofitUtil.get();
-
-
-
+        Service service = RetrofitUtil.get(ConnexionActivity.this);
 
 
         binding.Connection.setOnClickListener(new View.OnClickListener() {
@@ -55,13 +55,30 @@ public class ConnexionActivity extends AppCompatActivity {
                             Intent intent = new Intent(ConnexionActivity.this, HomeActivity.class);
                             startActivity(intent);
                         }
+                       if (response.code() == 400) {
+                           String message = getString(R.string.Connexion400Invalid);
+                           Toast.makeText(ConnexionActivity.this,message,Toast.LENGTH_LONG).show();
+                       }
+
                     }
 
                     @Override
                     public void onFailure(Call<SigninResponse> call, Throwable t) {
+                        if(t instanceof NoConnectivityException) {
+                            String message = getString(R.string.NoInternet);
+                            Toast.makeText(ConnexionActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });
+                }
+                if(binding.editTextPersonName.getText().toString().isEmpty()){
+                    String message = getString(R.string.EnterName);
+                    binding.editTextPersonName.setError(message);
+                }
+                if(binding.editTextPassword.getText().toString().isEmpty()){
+                    String message = getString(R.string.EnterPass);
+                    binding.editTextPassword.setError(message);
                 }
             }
         });

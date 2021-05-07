@@ -30,4 +30,21 @@
     <string name="CreationActivity_title">Création de la tâche</string>
     <string name="InscriptionActivity_title">Inscription</string>
     <string name="HomeActivity_title">Accueil</string>
+    <string name="NoInternet">Aucune connexion internet</string>
+    <string name="DeconnectionMessage">Vous avez été déconnecté avec succès</string>
+    <string name="EnterName">Tu dois écrire un nom</string>
+    <string name="EnterPass">Tu dois écrire un mot de passe</string>
+    <string name="EnterSamePass">Le mot de passe écrit doit être identique</string>
+    <string name="Inscription400Length">Le nom d\'utilisateur est trop long, il doit être entre 1 et 255, tu as </string>
+    <string name="Inscription400Exist">Erreur 400, utilisateur déjà existant </string>
+    <string name="Connexion400Invalid">Erreur 400, information invalide </string>
+    <string name="Home403Expiration">Erreur 401, votre connexion a expirée</string>
+    <string name="Home403NotConnected">Erreur 403, vous n\'êtes pas connecté </string>
+    <string name="Creation400Length">Le nom de la tâche est trop longue, il doit être entre 1 et 175, tu as </string>
+    <string name="Creation400Exist">Erreur 400, nom de tâche existant </string>
+    <string name="Creation403Expired">Erreur 401, votre session a expirée </string>
+    <string name="Creation403NotConnected">Erreur 403, vous n\'êtes pas connecté </string>
+    <string name="CreationEnterName">Vous devez entrer un nom de tâche</string>
+    <string name="Consultation404">Erreur 404, la tâche n\'existe pas ou a été supprimée </string>
+
 </resources>

@@ -3,11 +3,14 @@ package com.example.kickmyb.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kickmyb.R;
 import com.example.kickmyb.Singleton;
 import com.example.kickmyb.databinding.ActivityInscriptionBinding;
+import com.example.kickmyb.http.NoConnectivityException;
 import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
 import com.example.kickmyb.transfer.Utilisateur;
@@ -27,14 +30,13 @@ public class InscriptionActivity extends AppCompatActivity {
         binding = ActivityInscriptionBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        setTitle("Inscription");
-        Service service = RetrofitUtil.get();
+        setTitle(R.string.Activity_inscription_inscriptionTv);
+        Service service = RetrofitUtil.get(InscriptionActivity.this);
 
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if(binding.editTextTextPassword.getText().toString() != null &&  binding.editTextTextPassword2.getText().toString() != null)
                 if(!binding.editTextTextPersonName.getText().toString().isEmpty() &&
                         !binding.editTextTextPassword2.getText().toString().isEmpty() &&
                         !binding.editTextTextPassword.getText().toString().isEmpty() &&
@@ -52,19 +54,47 @@ public class InscriptionActivity extends AppCompatActivity {
                 utilisateurCall.enqueue(new Callback<SigninResponse>() {
                     @Override
                     public void onResponse(Call<SigninResponse> call, Response<SigninResponse> response) {
+                        if(response.isSuccessful()){
                         Singleton.getInstance().getUserName(binding.editTextTextPersonName.getText().toString());
                         Intent intent = new Intent(InscriptionActivity.this, HomeActivity.class);
                         startActivity(intent);
-
+                        }
+                        if (response.code() == 400) {
+                            if(binding.editTextTextPersonName.getText().length() > 255){
+                                String message = getString(R.string.Inscription400Length);
+                                binding.editTextTextPersonName.setError(message + binding.editTextTextPersonName.getText().length());
+                            }
+                            else{
+                                String message = getString(R.string.Inscription400Exist);
+                                Toast.makeText(InscriptionActivity.this,message,Toast.LENGTH_LONG).show();
+                            }
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<SigninResponse> call, Throwable t) {
-
+                        if(t instanceof NoConnectivityException) {
+                            String message = getString(R.string.NoInternet);
+                            Toast.makeText(InscriptionActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 });
                 }
+                    if(binding.editTextTextPersonName.getText().toString().isEmpty()){
+                        String message = getString(R.string.EnterName);
+                        binding.editTextTextPersonName.setError(message);
+                    }
+
+                    if(binding.editTextTextPassword.getText().toString().isEmpty()){
+                        String message = getString(R.string.EnterPass);
+                        binding.editTextTextPassword.setError(message);
+                    }
+
+                    if(!binding.editTextTextPassword.getText().toString().equals(binding.editTextTextPassword2.getText().toString())){
+                        String message = getString(R.string.EnterSamePass);
+                        binding.editTextTextPassword2.setError(message);
+                    }
 
             }
         });

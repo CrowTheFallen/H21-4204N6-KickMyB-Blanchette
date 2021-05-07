@@ -21,16 +21,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.kickmyb.R;
 import com.example.kickmyb.Singleton;
 import com.example.kickmyb.databinding.ActivityCreationBinding;
+import com.example.kickmyb.http.NoConnectivityException;
 import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
 import com.example.kickmyb.transfer.CreationTâche;
 import com.example.kickmyb.transfer.Utilisateur;
 import com.google.android.material.navigation.NavigationView;
 
+import org.joda.time.DateTime;
 import org.kickmyb.transfer.AddTaskRequest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -48,14 +52,8 @@ public class CreationActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         setTitle(R.string.CreationActivity_title);
-        Service service = RetrofitUtil.get();
-       // binding.button3.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-       //     public void onClick(View view) {
-        //        Intent intent = new Intent(CreationActivity.this, HomeActivity.class);
-       //         startActivity(intent);
-        //    }
-       // });
+        Service service = RetrofitUtil.get(CreationActivity.this);
+
         final String[] année = new String[1];
         final String[] mois = new String[1];
         final String[] jour = new String[1];
@@ -85,13 +83,21 @@ public class CreationActivity extends AppCompatActivity {
         binding.button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Calendar today = Calendar.getInstance();
+                today.set(Calendar.HOUR_OF_DAY, 0);
+                today.set(Calendar.MINUTE, 0);
+                today.set(Calendar.SECOND, 0);
+
                 String deadLine= année[0] + "-"+mois[0]+"-"+jour[0];
+
                 Date dateString = null;
                 try {
                     dateString = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).parse(deadLine);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+            if(!binding.editTextTextPersonName2.getText().toString().isEmpty() && dateString.after(today.getTime())){
+
                 String name = binding.editTextTextPersonName2.getText().toString();
                 AddTaskRequest addTaskRequest = new AddTaskRequest();
                 addTaskRequest.name = name;
@@ -106,13 +112,41 @@ public class CreationActivity extends AppCompatActivity {
                             Intent intent = new Intent(CreationActivity.this, HomeActivity.class);
                             startActivity(intent);
                         }
+                        if (response.code() == 400) {
+                            if(binding.editTextTextPersonName2.getText().length() > 175){
+                                String message = getString(R.string.Creation400Length);
+                                binding.editTextTextPersonName2.setError(message + binding.editTextTextPersonName2.getText().length());
+                            }
+                            else{
+                                String message = getString(R.string.Creation400Exist);
+                                Toast.makeText(CreationActivity.this,message,Toast.LENGTH_SHORT).show();
+                            }
+
+                         if(response.code() == 401 && !Singleton.getInstance().giveUserName().isEmpty()){
+                             String message = getString(R.string.Creation403Expired);
+                             Toast.makeText(CreationActivity.this,message,Toast.LENGTH_SHORT).show();
+                         }
+                         if(response.code() == 403){
+                             String message = getString(R.string.Creation403NotConnected);
+                             Toast.makeText(CreationActivity.this,message,Toast.LENGTH_SHORT).show();
+                         }
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         Log.i("Erreur",t.toString());
+                        if(t instanceof NoConnectivityException) {
+                            String message = getString(R.string.NoInternet);
+                            Toast.makeText(CreationActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+                }
+                if(binding.editTextTextPersonName2.getText().toString().isEmpty()){
+                    String message = getString(R.string.CreationEnterName);
+                    binding.editTextTextPersonName2.setError(message);
+                }
             }
         });
 
@@ -160,12 +194,14 @@ public class CreationActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Service service = RetrofitUtil.get();
                 Call<String> utilisateurCall = service.Déconection();
                 utilisateurCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.isSuccessful()){
+                            Singleton.getInstance().Exit();
+                            String messageDeco = getString(R.string.DeconnectionMessage);
+                            Toast.makeText(CreationActivity.this,messageDeco,Toast.LENGTH_SHORT).show();
                             Intent i2 = new Intent(CreationActivity.this, ConnexionActivity.class);
                             drawerLayout.closeDrawers();
                             startActivity(i2);
@@ -174,7 +210,10 @@ public class CreationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        if(t instanceof NoConnectivityException) {
+                            String message = getString(R.string.NoInternet);
+                            Toast.makeText(CreationActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

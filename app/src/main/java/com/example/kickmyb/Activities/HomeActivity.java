@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kickmyb.R;
 import com.example.kickmyb.Singleton;
+import com.example.kickmyb.http.NoConnectivityException;
 import com.example.kickmyb.transfer.Tâche;
 import com.example.kickmyb.TâcheAdapter;
 import com.example.kickmyb.databinding.ActivityHomeBinding;
@@ -44,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
     private ActionBarDrawerToggle toggle;
     TâcheAdapter adapter;
-    Service service = RetrofitUtil.get();
+    Service service = RetrofitUtil.get(HomeActivity.this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,12 +109,14 @@ public class HomeActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                //Service service = RetrofitUtil.get();
                 Call<String> utilisateurCall = service.Déconection();
                 utilisateurCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.isSuccessful()){
+                            Singleton.getInstance().Exit();
+                            String messageDeco = getString(R.string.DeconnectionMessage);
+                            Toast.makeText(HomeActivity.this,messageDeco,Toast.LENGTH_SHORT).show();
                             Intent i2 = new Intent(HomeActivity.this, ConnexionActivity.class);
                             drawerLayout.closeDrawers();
                             startActivity(i2);
@@ -121,7 +125,10 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        if(t instanceof NoConnectivityException) {
+                            String message = getString(R.string.NoInternet);
+                            Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -152,47 +159,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
-    //public String ActivityDifferentitaion(String responseTime) {
-
-        //SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
-        //ParsePosition pos = new ParsePosition(0);
-        //long then = formatter.parse(responseTime, pos).getTime();
-        //long now = new Date().getTime();
-
-        //long seconds = (now - then) / 1000;
-        //long minutes = seconds / 60;
-        //long hours = minutes / 60;
-        //long days = hours / 24;
-
-        //String friendly = null;
-        //long num = 0;
-        //if (days > 0) {
-        //    num = days;
-         //   friendly = days + " day";
-        //}
-        //else if (hours > 0) {
-        //    num = hours;
-         //   friendly = hours + " hour";
-        //}
-        //else if (minutes > 0) {
-           // num = minutes;
-            //friendly = minutes + " minute";
-        //}
-        //else {
-            //num = seconds;
-            //friendly = seconds + " second";
-        //}
-        // (num > 1) {
-            //friendly += "s";
-        //}
-       //return ("Temps écoulé : "+ friendly + " ago");
-
-    //}
-
 
 
     private void remplirRecycler() {
-        //for (int i = 0 ; i < 250 ; i++) {
 
             Call<List<HomeItemResponse>> CreationdeTache =
                     service.ConsultationDeTache();
@@ -232,26 +201,27 @@ public class HomeActivity extends AppCompatActivity {
                         }
                         adapter.notifyDataSetChanged();
                     }
+                    if(response.code() == 401 && !Singleton.getInstance().giveUserName().isEmpty()){
+                        String message = getString(R.string.Home403Expiration);
+                        Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                    }
+                    if(response.code() == 403){
+                        String message = getString(R.string.Home403NotConnected);
+                        Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<List<HomeItemResponse>> call, Throwable t) {
                     Log.i("Erreur",t.toString());
+                    if(t instanceof NoConnectivityException) {
+                        String message = getString(R.string.NoInternet);
+                        Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
 
-
-
-            //Tâche p = new Tâche();
-            //Calendar maintenant = Calendar.getInstance();
-            //p.nom = "Tâche numéro " + i;
-            //p.pourcentage = new Random().nextInt(11) * 10;
-            //p.dateDeCréation = ActivityDifferentitaion("22 03 2021");
-                    //"Temps écoulé : " + "2021/02/03";
-            //p.dateDeFin = "Date limite : " + "2021/02/08";
-            //adapter.list.add(p);
-        //}
 
     }
 

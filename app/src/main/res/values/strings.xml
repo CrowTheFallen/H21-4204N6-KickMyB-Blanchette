@@ -29,4 +29,21 @@
     <string name="CreationActivity_title">Creation of the task</string>
     <string name="InscriptionActivity_title">Inscription</string>
     <string name="HomeActivity_title">Home</string>
+    <string name="NoInternet">No internet connexion</string>
+    <string name="DeconnectionMessage">You have been successfully disconnected</string>
+    <string name="EnterName">You need to enter a name</string>
+    <string name="EnterPass">You need to enter a password</string>
+    <string name="EnterSamePass">The password you used need to be the same</string>
+    <string name="Inscription400Length">Username is too long, must be between 1 and 255, you have </string>
+    <string name="Inscription400Exist">Error 400, User already exist </string>
+    <string name="Connexion400Invalid">Error 400, invalid information </string>
+    <string name="Home403Expiration">Error 401, your connection has expired </string>
+    <string name="Home403NotConnected">Error 403, you are not connected </string>
+    <string name="Creation400Length">Your task name is too long, must be between 1 and 175, you have </string>
+    <string name="Creation400Exist">Error 400, name already exist </string>
+    <string name="Creation403Expired">Error 401, your connection has expired </string>
+    <string name="Creation403NotConnected">Error 403, you are not connected </string>
+    <string name="CreationEnterName">You need to give the task a name</string>
+    <string name="Consultation404">Error 404, the task doesn\'t exist or has been deleted </string>
+
 </resources>

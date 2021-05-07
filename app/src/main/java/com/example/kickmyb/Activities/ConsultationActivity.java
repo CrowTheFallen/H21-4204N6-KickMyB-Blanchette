@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.kickmyb.R;
 import com.example.kickmyb.Singleton;
 import com.example.kickmyb.databinding.ActivityConsultationBinding;
+import com.example.kickmyb.http.NoConnectivityException;
 import com.example.kickmyb.http.RetrofitUtil;
 import com.example.kickmyb.http.Service;
 import com.google.android.material.navigation.NavigationView;
@@ -35,7 +37,7 @@ import retrofit2.Response;
 public class ConsultationActivity extends AppCompatActivity {
     private ActivityConsultationBinding binding;
     private ActionBarDrawerToggle toggle;
-    Service service = RetrofitUtil.get();
+    Service service = RetrofitUtil.get(ConsultationActivity.this);
     private int progr = 0;
     private Long id;
     @Override
@@ -78,11 +80,23 @@ public class ConsultationActivity extends AppCompatActivity {
               binding.textView8.setText(Limit + " " +newDateString);
               updateProgressBar();
               }
+              if(response.code() == 401 && !Singleton.getInstance().giveUserName().isEmpty()){
+                  String message = getString(R.string.Creation403Expired);
+                  Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
+              }
+              if(response.code() == 403){
+                  String message = getString(R.string.Creation403NotConnected);
+                  Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
+              }
            }
 
          @Override
          public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
              Log.i("Erreur", t.toString());
+             if(t instanceof NoConnectivityException) {
+                 String message = getString(R.string.NoInternet);
+                 Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
+             }
          }
 
         });
@@ -92,22 +106,35 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<TaskDetailResponse> CreationdeTache =
+                Call<String> CreationdeTache =
                         service.NouveauPourcent(id,progr);
-                CreationdeTache.enqueue(new Callback<TaskDetailResponse>() {
+                CreationdeTache.enqueue(new Callback<String>() {
                     @Override
-                    public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
-
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Intent intent = new Intent(ConsultationActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                        if(response.code() == 403){
+                            String message = getString(R.string.Creation403NotConnected);
+                            Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
+                        if(response.code() == 404){
+                            String message = getString(R.string.Consultation404);
+                            Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
                     @Override
-                    public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
-
+                    public void onFailure(Call<String> call, Throwable t) {
+                        if(t instanceof NoConnectivityException) {
+                            String message = getString(R.string.NoInternet);
+                            Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-                Intent intent = new Intent(ConsultationActivity.this, HomeActivity.class);
-                startActivity(intent);
+
             }
         });
 
@@ -182,6 +209,9 @@ public class ConsultationActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.isSuccessful()){
+                            Singleton.getInstance().Exit();
+                            String messageDeco = getString(R.string.DeconnectionMessage);
+                            Toast.makeText(ConsultationActivity.this,messageDeco,Toast.LENGTH_SHORT).show();
                             Intent i2 = new Intent(ConsultationActivity.this, ConnexionActivity.class);
                             drawerLayout.closeDrawers();
                             startActivity(i2);
@@ -190,7 +220,10 @@ public class ConsultationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        if(t instanceof NoConnectivityException) {
+                            String message = getString(R.string.NoInternet);
+                            Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 return true;
