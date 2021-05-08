@@ -2,7 +2,9 @@ package com.example.kickmyb.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import retrofit2.Response;
 
 public class ConnexionActivity extends AppCompatActivity {
     private ActivityConnexionBinding binding;
+    ProgressDialog progressD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,12 @@ public class ConnexionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!binding.editTextPersonName.getText().toString().isEmpty() &&
                         !binding.editTextPassword.getText().toString().isEmpty()){
+                    String message = getString(R.string.ProgressDialogWait);
+                    String messageco = getString(R.string.ProgressDialogConnect);
+
+                    progressD = ProgressDialog.show(ConnexionActivity.this, message,
+                            messageco,true);
+
                     SigninRequest signinRequest = new SigninRequest();
                     signinRequest.username = binding.editTextPersonName.getText().toString();
                     signinRequest.password = binding.editTextPassword.getText().toString();
@@ -50,6 +59,7 @@ public class ConnexionActivity extends AppCompatActivity {
                 utilisateurCall.enqueue(new Callback<SigninResponse>() {
                    @Override
                     public void onResponse(Call<SigninResponse> call, Response<SigninResponse> response) {
+                       new DialogTask<>().execute();
                         if(response.isSuccessful()){
                             Singleton.getInstance().getUserName(binding.editTextPersonName.getText().toString());
                             Intent intent = new Intent(ConnexionActivity.this, HomeActivity.class);
@@ -64,6 +74,7 @@ public class ConnexionActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<SigninResponse> call, Throwable t) {
+                        new DialogTask<>().execute();
                         if(t instanceof NoConnectivityException) {
                             String message = getString(R.string.NoInternet);
                             Toast.makeText(ConnexionActivity.this,message,Toast.LENGTH_SHORT).show();
@@ -90,5 +101,24 @@ public class ConnexionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            super.onPostExecute(c);
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

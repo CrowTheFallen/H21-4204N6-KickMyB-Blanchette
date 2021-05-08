@@ -20,6 +20,7 @@ public class RetrofitUtil {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client(mContext))
                 .baseUrl("https://rhubarb-cobbler-43725.herokuapp.com/")
+                //.baseUrl("http://10.0.2.2:8080/")
                 .build();
 
             instance = retrofit.create(Service.class);

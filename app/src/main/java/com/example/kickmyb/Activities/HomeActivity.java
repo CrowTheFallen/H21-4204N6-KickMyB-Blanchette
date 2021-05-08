@@ -1,7 +1,9 @@
 package com.example.kickmyb.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -43,6 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
+    ProgressDialog progressD;
     private ActivityHomeBinding binding;
     private ActionBarDrawerToggle toggle;
     TâcheAdapter adapter;
@@ -54,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         setTitle(R.string.HomeActivity_title);
+
+
 
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,10 +114,17 @@ public class HomeActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                String message = getString(R.string.ProgressDialogWait);
+                String messagediscon = getString(R.string.ProgressDialogDesc);
+
+                progressD = ProgressDialog.show(HomeActivity.this, message,
+                        messagediscon,true);
+
                 Call<String> utilisateurCall = service.Déconection();
                 utilisateurCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        new HomeActivity.DialogTask<>().execute();
                         if(response.isSuccessful()){
                             Singleton.getInstance().Exit();
                             String messageDeco = getString(R.string.DeconnectionMessage);
@@ -125,6 +137,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
+                        new HomeActivity.DialogTask<>().execute();
                         if(t instanceof NoConnectivityException) {
                             String message = getString(R.string.NoInternet);
                             Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
@@ -162,12 +175,18 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void remplirRecycler() {
+        String message = getString(R.string.ProgressDialogWait);
+        String messagelist = getString(R.string.ProgressDialogFetchList);
+
+        progressD = ProgressDialog.show(HomeActivity.this, message,
+                messagelist,true);
 
             Call<List<HomeItemResponse>> CreationdeTache =
                     service.ConsultationDeTache();
             CreationdeTache.enqueue(new Callback<List<HomeItemResponse>>() {
                 @Override
                 public void onResponse(Call<List<HomeItemResponse>> call, Response<List<HomeItemResponse>> response) {
+                    new HomeActivity.DialogTask<>().execute();
                     if(response.isSuccessful()){
                         List<HomeItemResponse> resultat = response.body();
                         for (int i = 0; i < resultat.size();i++) {
@@ -213,6 +232,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<List<HomeItemResponse>> call, Throwable t) {
+                    new HomeActivity.DialogTask<>().execute();
                     Log.i("Erreur",t.toString());
                     if(t instanceof NoConnectivityException) {
                         String message = getString(R.string.NoInternet);
@@ -237,5 +257,24 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new TâcheAdapter();
         recyclerView.setAdapter(adapter);
 
+    }
+
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            super.onPostExecute(c);
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

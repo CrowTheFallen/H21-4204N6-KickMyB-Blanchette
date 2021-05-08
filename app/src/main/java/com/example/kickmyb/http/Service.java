@@ -20,6 +20,7 @@ import retrofit2.http.Path;
 
 public interface Service {
 
+
     @GET("api/progress/{id}/{valeur}")
     Call<String> NouveauPourcent(@Path("id") Long id, @Path("valeur") int valeur);
 

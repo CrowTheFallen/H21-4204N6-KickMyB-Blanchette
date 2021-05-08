@@ -45,5 +45,13 @@
     <string name="Creation403NotConnected">Error 403, you are not connected </string>
     <string name="CreationEnterName">You need to give the task a name</string>
     <string name="Consultation404">Error 404, the task doesn\'t exist or has been deleted </string>
+    <string name="ProgressDialogWait">Please wait</string>
+    <string name="ProgressDialogConnect">Connexion in progress</string>
+    <string name="ProgressDialogInsc">Inscription in progress</string>
+    <string name="ProgressDialogDesc">Disconnection in progress</string>
+    <string name="ProgressDialogFetchList">Fetching your tasks\'s list</string>
+    <string name="ProgressDialogCreation">Task creation in progress</string>
+    <string name="ProgressDialogFetchInformation">Fetching task\'s information in progress</string>
+    <string name="ProgressDialogProgress">Changing your tasks progress in progress</string>
 
 </resources>

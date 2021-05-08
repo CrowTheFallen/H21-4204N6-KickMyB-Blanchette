@@ -1,8 +1,10 @@
 package com.example.kickmyb.Activities;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -43,6 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CreationActivity extends AppCompatActivity {
+    ProgressDialog progressD;
     private ActivityCreationBinding binding;
     private ActionBarDrawerToggle toggle;
     @Override
@@ -97,6 +100,11 @@ public class CreationActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             if(!binding.editTextTextPersonName2.getText().toString().isEmpty() && dateString.after(today.getTime())){
+                String message = getString(R.string.ProgressDialogWait);
+                String messagecre = getString(R.string.ProgressDialogCreation);
+
+                progressD = ProgressDialog.show(CreationActivity.this, message,
+                        messagecre,true);
 
                 String name = binding.editTextTextPersonName2.getText().toString();
                 AddTaskRequest addTaskRequest = new AddTaskRequest();
@@ -108,6 +116,8 @@ public class CreationActivity extends AppCompatActivity {
                 CreationdeTache.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        new CreationActivity.DialogTask<>().execute();
+
                         if(response.isSuccessful()){
                             Intent intent = new Intent(CreationActivity.this, HomeActivity.class);
                             startActivity(intent);
@@ -135,6 +145,7 @@ public class CreationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
+                        new CreationActivity.DialogTask<>().execute();
                         Log.i("Erreur",t.toString());
                         if(t instanceof NoConnectivityException) {
                             String message = getString(R.string.NoInternet);
@@ -194,10 +205,15 @@ public class CreationActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                String messagediscon = getString(R.string.ProgressDialogDesc);
+                String message = getString(R.string.ProgressDialogWait);
+                progressD = ProgressDialog.show(CreationActivity.this, message,
+                        messagediscon,true);
                 Call<String> utilisateurCall = service.Déconection();
                 utilisateurCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        new CreationActivity.DialogTask<>().execute();
                         if(response.isSuccessful()){
                             Singleton.getInstance().Exit();
                             String messageDeco = getString(R.string.DeconnectionMessage);
@@ -210,6 +226,7 @@ public class CreationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
+                        new CreationActivity.DialogTask<>().execute();
                         if(t instanceof NoConnectivityException) {
                             String message = getString(R.string.NoInternet);
                             Toast.makeText(CreationActivity.this,message,Toast.LENGTH_SHORT).show();
@@ -238,5 +255,25 @@ public class CreationActivity extends AppCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         toggle.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
+    }
+
+
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            super.onPostExecute(c);
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.kickmyb.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InscriptionActivity extends AppCompatActivity {
+    ProgressDialog progressD;
     private ActivityInscriptionBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class InscriptionActivity extends AppCompatActivity {
         Service service = RetrofitUtil.get(InscriptionActivity.this);
 
 
+
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,6 +45,13 @@ public class InscriptionActivity extends AppCompatActivity {
                         !binding.editTextTextPassword2.getText().toString().isEmpty() &&
                         !binding.editTextTextPassword.getText().toString().isEmpty() &&
                         binding.editTextTextPassword.getText().toString().equals(binding.editTextTextPassword2.getText().toString())){
+
+                    String message = getString(R.string.ProgressDialogWait);
+                    String messageIns = getString(R.string.ProgressDialogInsc);
+
+                    progressD = ProgressDialog.show(InscriptionActivity.this, message,
+                            messageIns,true);
+
 
 
                     SigninRequest signinRequest = new SigninRequest();
@@ -54,10 +65,11 @@ public class InscriptionActivity extends AppCompatActivity {
                 utilisateurCall.enqueue(new Callback<SigninResponse>() {
                     @Override
                     public void onResponse(Call<SigninResponse> call, Response<SigninResponse> response) {
+                        new DialogTask<>().execute();
                         if(response.isSuccessful()){
-                        Singleton.getInstance().getUserName(binding.editTextTextPersonName.getText().toString());
-                        Intent intent = new Intent(InscriptionActivity.this, HomeActivity.class);
-                        startActivity(intent);
+                            Singleton.getInstance().getUserName(binding.editTextTextPersonName.getText().toString());
+                            Intent intent = new Intent(InscriptionActivity.this, HomeActivity.class);
+                            startActivity(intent);
                         }
                         if (response.code() == 400) {
                             if(binding.editTextTextPersonName.getText().length() > 255){
@@ -73,6 +85,7 @@ public class InscriptionActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<SigninResponse> call, Throwable t) {
+                        new DialogTask<>().execute();
                         if(t instanceof NoConnectivityException) {
                             String message = getString(R.string.NoInternet);
                             Toast.makeText(InscriptionActivity.this,message,Toast.LENGTH_SHORT).show();
@@ -81,6 +94,7 @@ public class InscriptionActivity extends AppCompatActivity {
 
                 });
                 }
+
                     if(binding.editTextTextPersonName.getText().toString().isEmpty()){
                         String message = getString(R.string.EnterName);
                         binding.editTextTextPersonName.setError(message);
@@ -97,6 +111,25 @@ public class InscriptionActivity extends AppCompatActivity {
                     }
 
             }
+
         });
+    }
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            super.onPostExecute(c);
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

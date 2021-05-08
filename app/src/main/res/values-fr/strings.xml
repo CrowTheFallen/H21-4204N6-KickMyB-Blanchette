@@ -46,5 +46,14 @@
     <string name="Creation403NotConnected">Erreur 403, vous n\'êtes pas connecté </string>
     <string name="CreationEnterName">Vous devez entrer un nom de tâche</string>
     <string name="Consultation404">Erreur 404, la tâche n\'existe pas ou a été supprimée </string>
+    <string name="ProgressDialogWait">Attendez un moment</string>
+    <string name="ProgressDialogConnect">Connexion </string>
+    <string name="ProgressDialogInsc">Inscription en cours</string>
+    <string name="ProgressDialogDesc">Déconnexion en cours</string>
+    <string name="ProgressDialogFetchList">Récupération de votre liste de tâches</string>
+    <string name="ProgressDialogCreation">Création de tâches en cours</string>
+    <string name="ProgressDialogFetchInformation">Récupération des informations de la tâche en cours</string>
+    <string name="ProgressDialogProgress">Modification de la progression de vôtre tâche en cours</string>
+
 
 </resources>

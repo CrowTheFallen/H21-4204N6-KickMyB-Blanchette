@@ -1,7 +1,9 @@
 package com.example.kickmyb.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -35,6 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ConsultationActivity extends AppCompatActivity {
+    ProgressDialog progressD;
     private ActivityConsultationBinding binding;
     private ActionBarDrawerToggle toggle;
     Service service = RetrofitUtil.get(ConsultationActivity.this);
@@ -49,11 +52,18 @@ public class ConsultationActivity extends AppCompatActivity {
         setTitle(R.string.ConsultationActivity_title);
 
         final Long idtâche = getIntent().getLongExtra("id",2);
+
+        String message = getString(R.string.ProgressDialogWait);
+        String messagefetch = getString(R.string.ProgressDialogFetchInformation);
+
+        progressD = ProgressDialog.show(ConsultationActivity.this, message,
+                messagefetch,true);
         Call<TaskDetailResponse> consultation =
                 service.Consultation(idtâche);
         consultation.enqueue(new Callback<TaskDetailResponse>() {
            @Override
            public void onResponse(Call<TaskDetailResponse> call, Response<TaskDetailResponse> response) {
+               new ConsultationActivity.DialogTask<>().execute();
               if (response.isSuccessful()) {
                   final String OLD_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
                   final String NEW_FORMAT = "yyyy/MM/dd";
@@ -92,6 +102,7 @@ public class ConsultationActivity extends AppCompatActivity {
 
          @Override
          public void onFailure(Call<TaskDetailResponse> call, Throwable t) {
+             new ConsultationActivity.DialogTask<>().execute();
              Log.i("Erreur", t.toString());
              if(t instanceof NoConnectivityException) {
                  String message = getString(R.string.NoInternet);
@@ -106,11 +117,18 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = getString(R.string.ProgressDialogWait);
+                String messageProgress = getString(R.string.ProgressDialogProgress);
+
+                progressD = ProgressDialog.show(ConsultationActivity.this, message,
+                        messageProgress,true);
+
                 Call<String> CreationdeTache =
                         service.NouveauPourcent(id,progr);
                 CreationdeTache.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        new ConsultationActivity.DialogTask<>().execute();
                         if(response.isSuccessful()){
                             Intent intent = new Intent(ConsultationActivity.this, HomeActivity.class);
                             startActivity(intent);
@@ -128,6 +146,7 @@ public class ConsultationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
+                        new ConsultationActivity.DialogTask<>().execute();
                         if(t instanceof NoConnectivityException) {
                             String message = getString(R.string.NoInternet);
                             Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
@@ -203,11 +222,16 @@ public class ConsultationActivity extends AppCompatActivity {
         binding.navView.getMenu().findItem(R.id.nav_item_three).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                String messagediscon = getString(R.string.ProgressDialogDesc);
+                String message = getString(R.string.ProgressDialogWait);
+                progressD = ProgressDialog.show(ConsultationActivity.this, message,
+                        messagediscon,true);
                 //Service service = RetrofitUtil.get();
                 Call<String> utilisateurCall = service.Déconection();
                 utilisateurCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        new ConsultationActivity.DialogTask<>().execute();
                         if(response.isSuccessful()){
                             Singleton.getInstance().Exit();
                             String messageDeco = getString(R.string.DeconnectionMessage);
@@ -220,6 +244,7 @@ public class ConsultationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
+                        new ConsultationActivity.DialogTask<>().execute();
                         if(t instanceof NoConnectivityException) {
                             String message = getString(R.string.NoInternet);
                             Toast.makeText(ConsultationActivity.this,message,Toast.LENGTH_SHORT).show();
@@ -254,5 +279,25 @@ public class ConsultationActivity extends AppCompatActivity {
     private void updateProgressBar() {
         binding.progressBar.setProgress(progr);
         binding.textViewProgress.setText(""+progr+"%");
+    }
+
+
+    class DialogTask<A,B,C> extends AsyncTask<A,B,C> {
+
+        @Override
+        protected void onPostExecute(C c) {
+            progressD.dismiss();
+            super.onPostExecute(c);
+        }
+
+        @Override
+        protected C doInBackground(A... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }
